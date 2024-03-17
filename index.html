@@ -7,27 +7,27 @@
     <h1>Matchmaker</h1>
     <form id="matchmakerForm">
         <p>Question 1: Do you like dogs?</p>
-        <input type="radio" name="q1" value="yes"> Yes
+        <input type="radio" name="q1" value="yes" required> Yes
         <input type="radio" name="q1" value="no"> No
         <br>
 
         <p>Question 2: Do you like cars?</p>
-        <input type="radio" name="q2" value="yes"> Yes
+        <input type="radio" name="q2" value="yes" required> Yes
         <input type="radio" name="q2" value="no"> No
         <br>
 
         <p>Question 3: Do you like the arts such as painting or drawing?</p>
-        <input type="radio" name="q3" value="yes"> Yes
+        <input type="radio" name="q3" value="yes" required> Yes
         <input type="radio" name="q3" value="no"> No
         <br>
 
         <p>Question 4: Do you like the rain over the sun?</p>
-        <input type="radio" name="q4" value="yes"> Yes
+        <input type="radio" name="q4" value="yes" required> Yes
         <input type="radio" name="q4" value="no"> No
         <br>
 
         <p>Question 5: Do you enjoy ice cream over cake?</p>
-        <input type="radio" name="q5" value="yes"> Yes
+        <input type="radio" name="q5" value="yes" required> Yes
         <input type="radio" name="q5" value="no"> No
         <br>
 
@@ -37,16 +37,52 @@
     <div id="compatibilityResult" style="display: none;">
         <h2>Compatibility Result</h2>
         <p id="overallCompatibility"></p>
+        <p id="individualScores"></p>
+        <p id="closingRemark"></p>
     </div>
 
     <script>
         document.getElementById('matchmakerForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            // Calculate compatibility scores here
-            // Display compatibility result
-            document.getElementById('compatibilityResult').style.display = 'block';
-            document.getElementById('overallCompatibility').innerText = 'Overall Compatibility: 80%'; // Example compatibility score
+            // Calculate compatibility scores
+            let scores = {};
+            let totalScore = 0;
+            const questions = ['q1', 'q2', 'q3', 'q4', 'q5'];
+            for (let question of questions) {
+                const answer = document.querySelector(`input[name="${question}"]:checked`);
+                if (answer) {
+                    const score = answer.value === 'yes' ? 1 : 0; // Assign scores based on user answers
+                    scores[question] = score;
+                    totalScore += score;
+                } else {
+                    alert(`Please answer question ${question}`);
+                    return;
+                }
+            }
+            const compatibilityPercentage = (totalScore / questions.length) * 100;
+            displayResults(scores, compatibilityPercentage);
         });
+
+        function displayResults(scores, compatibilityPercentage) {
+            document.getElementById('compatibilityResult').style.display = 'block';
+            document.getElementById('overallCompatibility').innerText = `Overall Compatibility: ${compatibilityPercentage.toFixed(2)}%`;
+
+            let individualScoresHTML = '<h3>Individual Question Compatibility Scores</h3>';
+            for (let question in scores) {
+                individualScoresHTML += `<p>Question ${question.substring(1)}: ${scores[question] * 100}%</p>`;
+            }
+            document.getElementById('individualScores').innerHTML = individualScoresHTML;
+
+            let closingRemark = '';
+            if (compatibilityPercentage >= 80) {
+                closingRemark = "You're a perfect match!";
+            } else if (compatibilityPercentage >= 60) {
+                closingRemark = "You have a good chance of getting along.";
+            } else {
+                closingRemark = "Maybe you're not quite compatible.";
+            }
+            document.getElementById('closingRemark').innerText = closingRemark;
+        }
     </script>
 </body>
 </html>
