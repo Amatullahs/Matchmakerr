@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Matchmaker</title>
+</head>
+<body>
+    <h1>Matchmaker</h1>
+    <form id="matchmakerForm">
+        <p>Question 1: Do you like dogs?</p>
+        <input type="radio" name="q1" value="yes"> Yes
+        <input type="radio" name="q1" value="no"> No
+        <br>
+        <!-- Repeat similar structure for other questions -->
+        <!-- Include questions 2 through 5 here -->
+      
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="compatibilityResult" style="display: none;">
+        <h2>Compatibility Result</h2>
+        <p id="overallCompatibility"></p>
+    </div>
+
+    <script>
+        document.getElementById('matchmakerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Calculate compatibility scores here
+            // Display compatibility result
+            document.getElementById('compatibilityResult').style.display = 'block';
+            document.getElementById('overallCompatibility').innerText = 'Overall Compatibility: 80%'; // Example compatibility score
+        });
+    </script>
+</body>
+</html>
 
